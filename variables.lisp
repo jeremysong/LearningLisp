@@ -23,3 +23,25 @@
 
 (defparameter *gap-tolerance* 0.001
   "Tolerance to be allowed in widget gaps.")
+
+(defvar *x* 10)
+
+(defun foo1 ()
+  (format t "Before assignment~18tX: ~d~%" *x*)
+  (setf *x* (+ 1 *x*))
+  (format t "After assignment~18tX: ~d~%" *x*))
+
+(defun bar ()
+  (foo1)
+  (let ((*x* 20)) (foo1))
+  (foo1))
+
+(defun foo2 ()
+  (let ((y 20))
+    (foo y)
+    (print y)))
+
+(defun foo3 ()
+  (let ((y 20))
+    (setf y 10)
+    (print y)))
