@@ -12,3 +12,35 @@
 
 (defun print-primes-2 (a b)
   (loop for p from (next-prime a) to (next-prime b) when (and (< p b) (primep p)) do (format t "~d " p)))
+
+(defmacro do-primes (var-and-range &rest body)
+  (let ((var (first var-and-range))
+        (start (second var-and-range))
+        (end (third var-and-range)))
+    `(do ((,var (next-prime ,start) (next-prime (1+ ,var))))
+         ((> ,var ,end))
+       ,@body)))
+
+(defmacro do-primes-2 ((var start end) &body body)
+   `(do ((,var (next-prime ,start) (next-prime (1+ ,var))))
+        ((> ,var ,end))
+       ,@body))
+
+(defmacro do-primes-3 ((var start end) &body body)
+  `(do ((ending-value ,end)
+        (,var (next-prime ,start) (next-prime (1+ ,var))))
+       ((> ,var ending-value))
+      ,@body))
+
+(defmacro do-primes-4 ((var start end) &body body)
+  `(do ((,var (next-prime ,start) (next-prime (1+ ,var)))
+         (ending-value ,end))
+       ((> ,var ending-value))
+      ,@body))
+
+(defmacro do-primes-5 ((var start end) &body body)
+  (let ((ending-value-name (gensym)))
+    `(do ((,var (next-prime ,start) (next-prime (1+ ,var)))
+          (,ending-value-name ,end))
+         ((> ,var ,ending-value-name))
+        ,@body)))
