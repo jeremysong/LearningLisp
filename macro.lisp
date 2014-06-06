@@ -44,3 +44,14 @@
           (,ending-value-name ,end))
          ((> ,var ,ending-value-name))
         ,@body)))
+
+(defmacro with-gensyms ((&rest names) &body body)
+  `(let ,(loop for n in names collect `(,n (gensym)))
+     ,@body))
+
+(defmacro do-primes-6 ((var start end) &body body)
+  (with-gensyms (ending-value-name)
+    `(do ((,var (next-prime ,start) (next-prime (1+ ,var)))
+          (,ending-value-name ,end))
+         ((> ,var ,ending-value-name))
+       ,@body)))
